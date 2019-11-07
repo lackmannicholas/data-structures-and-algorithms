@@ -33,47 +33,84 @@ class Graph {
         }
     }
 
-    BFS(start, end) {
+    // assuming no duplicates for ease
+    AddNode(val, adj = []) {
+        let newNode = new GraphNode(val, adj);
 
+        this.nodes.push(newNode);
+
+        newNode.adj.forEach(adj => {
+            var neighbor = node.adj[i];
+            node.adj[i] = this.nodes[neighbor];
+        });
     }
 
-    DFS() {
+    BFS(s = this.nodes[0]) {
+        console.log("BFS Begin:");
 
+        let queue = [];
+        let visited = this.nodes.map(node => false);
+
+        // initialize
+        queue.push(s);
+        visited[s.val] = true;
+
+        let currentNode = null;
+        
+        while(queue.length > 0) {
+            // get the next node
+            currentNode = queue.shift();
+
+            console.log(currentNode.val);
+
+            currentNode.adj.forEach(node => {
+                // if we haven't visited this node then add it to our queue
+                if(!visited[node.val]) {
+                    // mark that we've visited this node
+                    visited[node.val] = true;
+                    queue.push(node);
+                }
+            });
+        }
     }
 
-    dfs (node, path, result) {
-        // this is not the node you're looking for
-        if(node == this.end) {
-            // add last node to path
-            path.push(node);
+    // could implement this recursively, but I'm not to save memory space
+    // implementing with stack instead
+    DFS(s = this.nodes[0]) {
+        console.log("DFS Begin:");
 
-            // add path to results
-            result.push([...path]);
+        let stack = [];
+        let visited = [];
 
-            return;
+        // initialize
+        stack.push(s);
+        visited[s.val] = true;
+
+        let currentNode = null;
+        
+        while(stack.length > 0) {
+            currentNode = stack.pop();
+
+            console.log(currentNode.val);
+
+            currentNode.adj.forEach(neighbor => {
+                if(!visited[neighbor.val]) {
+                    visited[neighbor.val] = true;
+                    stack.push(neighbor);
+                }
+            });
         }
-
-        path.push(node);
-
-        for(var i = 0; i < this.nodes[node].length; i++) {
-            this.DFS(this.nodes[node][i], path, result);
-            
-            path.pop();
-            if(this.nodes[node][i] == this.end)
-                break;
-        }
-
-        return;
     }
 }
 
 
-var allPathsSourceTarget = function(graph) {
+var main = function(graph) {
     let g = new Graph(graph);
-    
+    g.BFS();
+    g.DFS();
     return;
 };
 
-let graph = [[1,2], [3], [3], []];
+let graph = [[1,2,4], [3,4], [1], [], []];
 
-allPathsSourceTarget(graph);
+main(graph);
