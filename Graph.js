@@ -7,8 +7,22 @@ class GraphNode {
 
 class Graph {
     constructor(graph) {
+        // assuming we're getting a array of adjacency lists where the node value is it's position in
+        // the array
         if(graph && graph.length > 0) {
-            this.nodes = graph;
+            this.nodes = [];
+            graph.forEach((adj, i) => {
+                let gNode = new GraphNode(i, adj);
+                this.nodes.push(gNode);
+            });
+
+            this.nodes.forEach((node, i) => {
+                for(var i = 0; i < node.adj.length; i++) {
+                    var neighbor = node.adj[i];
+                    node.adj[i] = this.nodes[neighbor];
+                }
+            });
+
             this.start = 0;
             this.end = graph.length-1;
         }
@@ -19,23 +33,15 @@ class Graph {
         }
     }
 
-    findAllPaths(node) {
-        if(node == this.nodes.length - 1) return [[node]];
+    BFS(start, end) {
 
-        let result = [];
-
-        if(this.nodes[node]) {
-            this.nodes[node].forEach(n => {
-                this.findAllPaths(n).forEach(path => {
-                    result.push([node, ...path]);
-                })
-            });
-        }
-        
-        return result;
     }
 
-    DFS (node, path, result) {
+    DFS() {
+
+    }
+
+    dfs (node, path, result) {
         // this is not the node you're looking for
         if(node == this.end) {
             // add last node to path
@@ -65,9 +71,9 @@ class Graph {
 var allPathsSourceTarget = function(graph) {
     let g = new Graph(graph);
     
-    return g.findAllPaths(0);
+    return;
 };
 
-let graph = [[1,2], [3], [3], []] ;
+let graph = [[1,2], [3], [3], []];
 
 allPathsSourceTarget(graph);
