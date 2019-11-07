@@ -25,6 +25,19 @@ class Queue {
     get Count() {
         return this.q.length;
     }
+
+    toString() {
+        let result = "";
+
+        this.q.forEach(item => {
+            result += item + ",";
+        });
+
+        if(result.length > 0)
+            result = result.substr(0, result.length - 1);
+        
+        return result;
+    }
 }
 
 let queue = new Queue();
@@ -32,6 +45,7 @@ let queue = new Queue();
 console.log(queue.isEmpty);
 queue.enqueue({Name: "this name"});
 queue.enqueue({Count: 2354});
+console.log(queue.toString());
 console.log(queue.peek());
 console.log(queue.Count);
 console.log(queue.dequeue());
