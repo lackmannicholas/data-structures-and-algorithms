@@ -120,6 +120,25 @@ class LinkedList {
         return removeNode.val;
     }
 
+    getItem(i) {
+        if(i >= this.count)
+            throw Error("i > the number of items in the list");
+        
+        if(i == this.count - 1)
+            return this.end.val;
+        else if(i == 0)
+            return this.head.val;
+
+        let currentNode = this.head;
+
+        while(i > 0) {
+            currentNode = currentNode.next;
+            i--;
+        }
+
+        return currentNode.val;
+    }
+
     get isEmpty() {
         return this.count == 0;
     }
@@ -131,11 +150,13 @@ class LinkedList {
 
 let llCoolList = new LinkedList();
 
-llCoolList.prepend("first head");
-llCoolList.prepend("second head");
-llCoolList.prepend("third head");
-llCoolList.prepend("fourth head");
+llCoolList.prepend("end ");
+llCoolList.prepend("third node");
+llCoolList.prepend("second node");
+llCoolList.prepend("head");
 
+console.log(llCoolList.getItem(2));
+console.log(llCoolList.getItem(3));
 console.log(llCoolList.first());
 console.log(llCoolList.last());
 
