@@ -1,3 +1,6 @@
+/*
+    Implemented with bitwise hashing and storing key value in a JS object
+*/
 class HashTable {
     constructor() {
         this.table = {};
@@ -28,6 +31,8 @@ class HashTable {
         return hash;
     }
 }
+
+module.exports = HashTable;
 
 let hash = new HashTable();
 
