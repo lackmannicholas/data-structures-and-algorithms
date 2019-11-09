@@ -1,3 +1,8 @@
+class HeapNode {
+    constructor() {
+        
+    }
+}
 class BinaryMinHeap {
     constructor() {
         this.heap = [];
