@@ -1,22 +1,25 @@
 /*
     Implemented with bitwise hashing and storing key value in a JS object
 */
-class HashTable {
+class HashMap {
     constructor() {
-        this.table = {};
+        this.map = new Map();
     }
 
     getValue(key) {
         // if not available, undefined is returned
-        return this.table[this.hash(key)];
+        return this.map.get(this.hash(key));
     }
 
     setValue(key, value) {
-        this.table[this.hash(key)] = value;
+        this.map.set(this.hash(key), value);
+        return this.map.get(this.hash(key));
     }
 
     remove(key) {
-        delete this.table[this.hash(key)];
+        let item = this.map.get(this.hash(key));
+        this.map.delete(this.hash(key));
+        return item;
     }
 
     // implementation of Java's String.hashCode() method
@@ -32,9 +35,9 @@ class HashTable {
     }
 }
 
-module.exports = HashTable;
+module.exports = HashMap;
 
-let hash = new HashTable();
+let hash = new HashMap();
 
 hash.setValue("ME!", { name: "Nick Lackman", nickname: "lackdaddy"});
 hash.setValue("SecondME!", { name: "Nick Lackman", nickname: "better lackdaddy"});
