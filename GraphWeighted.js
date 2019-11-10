@@ -4,13 +4,13 @@ class GraphNode {
     constructor(id, val, adj = []) {
         this.id = id;
         this.val = val;
+        // map of destination id as the key and weight as the value
+        // since we can lookup nodes in O(1) from our this.nodes map, no need to keep a reference to neighbor nodes
         this.adj = new Map();
-        this.weights = new Map();
 
         // setting the neighbor index as the key
         adj.forEach(neighborID => {
-            this.adj.set(neighborID, neighborID);
-            this.weights.set(neighborID, 0);
+            this.adj.set(neighborID, 0);
         });
     }
 }
@@ -19,7 +19,6 @@ class Graph {
     constructor(graph) {
         this.nodes = new Map();
         this.start = null;
-        this.end = null;
 
         // assuming we're getting a array of adjacency lists where the node value is it's position in
         // the array
@@ -28,13 +27,6 @@ class Graph {
             graph.forEach((adj, i) => {
                 let newNode = new GraphNode(i, i, adj);
                 this.nodes.set(i, newNode);
-            });
-
-            // now that all GraphNodes are set, loop through again to get the correct GraphNode reference for each edge
-            this.nodes.forEach((graphNode) => {
-                graphNode.adj.forEach((neighborID) => {
-                    graphNode.adj.set(neighborID, this.nodes.get(neighborID));
-                });
             });
 
             // assuming our start is the 0 node for 
@@ -57,7 +49,7 @@ class Graph {
             if(this.nodes.size == 1)
                 this.start = newNode;
 
-            newNode.adj.forEach((neighborID, value) => {
+            newNode.adj.forEach((neighborID) => {
                 // get neighbor node from our node map
                 var neighbor = this.nodes.get(neighborID);
     
@@ -68,7 +60,7 @@ class Graph {
                 }
     
                 // set the neight node to our new node's adjceny list with the neighbor id
-                newNode.adj.set(neighbor.id, neighbor);
+                newNode.adj.set(neighbor.id, 0);
             });
 
             return newNode;
@@ -78,14 +70,13 @@ class Graph {
     }
 
     // allow modification node values
-    ModifyNode(id, val, adj = [], weights = new Map()) {
+    ModifyNode(id, val, adj = []) {
         let node = this.nodes.get(id);
         node.val = val;
-        node.weights = weights;
 
         // add edges, if any
         adj.forEach(neighborID => {
-            this.AddEdge(id, neighborID, node.weights.get(neighborID));
+            this.AddEdge(id, neighborID, node.get(neighborID));
         });
 
         return node;
@@ -102,8 +93,8 @@ class Graph {
         if(!dest) 
             dest = this.AddNode(destNodeID, destNodeID, []);
 
-        source.adj.set(dest.id, dest);
-        source.weights.set(dest.id, weight);
+        source.adj.set(dest.id, weight);
+
         if(this.nodes.size == 0)
                 this.start = newNode;
     }
@@ -118,7 +109,7 @@ class Graph {
         if(!dest)
             throw Error("Destination node does not exist");
 
-        source.weights.set(dest.id, weight);
+        source.adj.set(destNodeID, weight);
     }
 
     /*
@@ -144,7 +135,9 @@ class Graph {
 
             result.push(currentNode);
 
-            currentNode.adj.forEach(neighbor => {
+            currentNode.adj.forEach((weight, id) => {
+                let neighbor = this.nodes.get(id);
+
                 // if we haven't visited this node then add it to our queue
                 if(!visited.get(neighbor.id)) {
                     // mark that we've visited this node
@@ -182,7 +175,9 @@ class Graph {
 
             result.push(currentNode);
 
-            currentNode.adj.forEach(neighbor => {
+            currentNode.adj.forEach((weight, id) => {
+                let neighbor = this.nodes.get(id);
+
                 // if we haven't visited this node then add it to our stack
                 if(!visited.get(neighbor.id)) {
                     // mark that we've visited this node
@@ -196,7 +191,7 @@ class Graph {
 }
 
 
-var main = async function(graph) {
+var main = function(graph) {
     graph = [[1,2,4], [3,4], [1], [], []];
     let g = new Graph(graph);
 
@@ -207,19 +202,22 @@ var main = async function(graph) {
     g.AddEdge(274, "NEWNODE!");
     g.AddEdge(4, "NEWNODE!");
 
+    g.ModifyNode(2, {object: "AHHHH"});
+
     console.log("BFS Begin: ");
-    let bfs = await g.BFS();
+    let bfs = g.BFS();
     console.log(...bfs);
 
     console.log("DFS Begin: ");
-    let dfs = await g.DFS();
+    let dfs = g.DFS();
     console.log(...dfs);
 
         
     let minHeap = new BinaryMinHeap([], 'weight');
     g.nodes.forEach(node => {
-        node.adj.forEach(neighbor => {
-            minHeap.Insert({weight: node.weights.get(neighbor.id), node: neighbor});
+        node.adj.forEach((weight, id) => {
+            let neighbor = g.nodes.get(id);
+            minHeap.Insert({weight: node.adj.get(neighbor.id), node: neighbor});
         });
     });
 
