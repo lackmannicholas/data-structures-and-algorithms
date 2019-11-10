@@ -90,7 +90,7 @@ class BinaryMinHeap {
         return (i*2)+2;
     }
 
-    // Returns - Boolean if Heap property of Parent priority < Child priority
+    // Returns - Boolean if Min Heap property (Parent priority < Child priority) is satisfied
     validParent(i, p) {
         // if the user has specified a priorityName property, use that for comparision
         if(this.priorityName) {
@@ -104,7 +104,7 @@ class BinaryMinHeap {
     // Returns - index of parent
     parentIndex(i) {
         if(i === 0)
-            return 0;
+            return undefined;
 
         return Math.floor((i-1)/2);
     }
