@@ -111,22 +111,22 @@ class BinaryMinHeap {
 }
 module.exports = BinaryMinHeap;
 
-let weightArray = [
-    { weight: 5, source: 1, dest: 3},
-    { weight: 10, source: 1, dest: 3},
-    { weight: 2, source: 1, dest: 3},
-    { weight: .8, source: 1, dest: 3},
-    { weight: 6, source: 1, dest: 3},
-]
+// let weightArray = [
+//     { weight: 5, source: 1, dest: 3},
+//     { weight: 10, source: 1, dest: 3},
+//     { weight: 2, source: 1, dest: 3},
+//     { weight: .8, source: 1, dest: 3},
+//     { weight: 6, source: 1, dest: 3},
+// ]
 
-let objectHeap = new BinaryMinHeap(weightArray, "weight");
+// let objectHeap = new BinaryMinHeap(weightArray, "weight");
 
 
-console.log(objectHeap.Pop());
-console.log(objectHeap.Pop());
-console.log(objectHeap.Pop());
-console.log(objectHeap.Pop());
-console.log(objectHeap.Pop());
+// console.log(objectHeap.Pop());
+// console.log(objectHeap.Pop());
+// console.log(objectHeap.Pop());
+// console.log(objectHeap.Pop());
+// console.log(objectHeap.Pop());
 
 // let heap = new BinaryMinHeap([431, 139, 1214, 335, 1816, 928, 1038, 602, 1597, 1779, 1257, 1500, 1587, 630, 1210, 918, 1169, 765, 137, 1095, 523, 1271, 941, 867, 408, 499, 277, 1845, 1127, 1731, 107, 1627, 1208, 555, 1160, 421, 1287, 1577, 766, 1899, 50, 701, 400, 1768, 539, 377, 117, 1342, 976, 453, 1994, 1159, 232, 305, 1759, 1354, 911, 817, 1949, 1318, 1927, 5, 650, 273, 1282, 1121, 1413, 1686, 138, 1436, 1082, 1743, 603, 1163, 1356, 1703, 683, 1154, 48, 586, 430, 458, 1393, 131, 1150, 1357, 1650, 1275, 951, 235, 1457, 1438, 1965, 1589, 1195, 460, 1586, 824, 284, 163]);
 
