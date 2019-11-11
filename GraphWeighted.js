@@ -49,7 +49,7 @@ class Graph {
             if(this.nodes.size == 1)
                 this.start = newNode;
 
-            newNode.adj.forEach((neighborID) => {
+            newNode.adj.forEach((weight, neighborID) => {
                 // get neighbor node from our node map
                 var neighbor = this.nodes.get(neighborID);
     
@@ -188,64 +188,111 @@ class Graph {
         }
         return result;
     }
+
+    // returns an object with the distance, and path to the requested node
+    DijkstraShortestPath(e, s = this.start) {
+        if(typeof(s) ===  "number")
+            s = this.nodes.get(s);
+
+        //initialize
+        let dist = new Map();
+        let prev = new Map();
+        let processed = new Set();
+
+        let heap = new BinaryMinHeap([], "weight");
+        heap.insert({weight: 0, node: s});
+        dist.set(s.id, 0);
+        prev.set(s.id, null);
+
+        while(heap.size > 0) {
+            let min = heap.pop();
+
+            // keep track of our set of processed nodes
+            processed.add(min.node.id);
+
+            min.node.adj.forEach((weight, neighborID) => {
+                // if we've already found the shortest distance, move on
+                if(!processed.has(neighborID)) {
+                    let newDist = dist.get(min.node.id) + weight;
+                    let prevDist = dist.get(neighborID);
+    
+                    // if we don't have previous distance, add to heap w/ dist
+                    if(prevDist === null || prevDist === undefined) {
+                        dist.set(neighborID, newDist);
+                        prev.set(neighborID, min.node.id);
+    
+                        heap.insert({weight: newDist, node: this.nodes.get(neighborID)});
+                    } // or the new distance is less than the previous
+                    else if(newDist < prevDist) {
+                        dist.set(neighborID, newDist);
+                        prev.set(neighborID, min.node.id);
+    
+                        heap.modify({weight: prevDist, node: this.nodes.get(neighborID)}, newDist);
+                    }
+                }
+            });
+        }
+
+        console.log("Distances from " + s.id.toString() + ":");
+        // done what do we have?
+        dist.forEach((value, key) => {
+            console.log("ID: " + key + "    Distance: " + value);
+        });
+    }
 }
 
 
-var main = function(graph) {
-    graph = [[1,2,4], [3,4], [1], [], []];
-    let g = new Graph(graph);
+var main = function() {
+    //graph = [[1,2,4], [3,4], [1], [], []];
+    
+    let g = new Graph();
 
-    g.AddNode(274, {name:"ObjectNode"}, [1,4]);
-    g.AddEdge(1, 274);
+    let graph = [[0,1,3], [0,2,4], [0,4,1], [1,3,2], [2,1,.5]];
 
-    g.AddNode("NEWNODE!", {name:"Different object ready to be noded"}, [274, 0, 2]);
-    g.AddEdge(274, "NEWNODE!");
-    g.AddEdge(4, "NEWNODE!");
+    graph.forEach(edge => {
+        g.AddEdge(edge[0], edge[1], edge[2]);
+    });
+
+    g.AddNode(274, {name:"ObjectNode"});
+    g.AddEdge(274, 1, .44246);
+    g.AddEdge(274, 4, 45);
+    g.AddEdge(1, 274, 12);
+
+    g.AddNode("NEWNODE!", {name:"Different object ready to be noded"});
+    g.AddEdge("NEWNODE!", 274, 3);
+    g.AddEdge("NEWNODE!", 0, 0);
+    g.AddEdge("NEWNODE!", 2, 2.75);
+    g.AddEdge(274, "NEWNODE!",3);
+    g.AddEdge(4, "NEWNODE!", 6);
 
     g.ModifyNode(2, {object: "AHHHH"});
 
-    console.log("BFS Begin: ");
-    let bfs = g.BFS();
-    console.log(...bfs);
+    // shortest path from 0 to 274
+    let dijk = g.DijkstraShortestPath(274, 0);
 
-    console.log("DFS Begin: ");
-    let dfs = g.DFS();
-    console.log(...dfs);
 
-        
-    let minHeap = new BinaryMinHeap([], 'weight');
-    g.nodes.forEach(node => {
-        node.adj.forEach((weight, id) => {
-            let neighbor = g.nodes.get(id);
-            minHeap.Insert({weight: node.adj.get(neighbor.id), node: neighbor});
-        });
-    });
 
-    let order = [];
-    while(minHeap.Min()) {
-        order.push(minHeap.Pop());
-    }
-    console.log(...order);
+    // console.log("BFS Begin: ");
+    // let bfs = g.BFS();
+    // console.log(...bfs);
+
+    // console.log("DFS Begin: ");
+    // let dfs = g.DFS();
+    // console.log(...dfs);
+
+    // let minHeap = new BinaryMinHeap([], 'weight');
+    // g.nodes.forEach(node => {
+    //     node.adj.forEach((weight, id) => {
+    //         let neighbor = g.nodes.get(id);
+    //         minHeap.Insert({weight: node.adj.get(neighbor.id), node: neighbor});
+    //     });
+    // });
+
+    // let order = [];
+    // while(minHeap.Min()) {
+    //     order.push(minHeap.Pop());
+    // }
+    // console.log(...order);
 };
 
 main();
-// let g = new Graph();
-
-// g.AddEdge(0,1,2);
-// g.AddEdge(0,2,2);
-// g.AddEdge(0,4,4);
-// g.AddEdge(1,3,3);
-// g.AddEdge(2,1,1);
-
-// let minHeap = new BinaryMinHeap([], 'weight');
-// g.nodes.forEach(node => {
-//     node.adj.forEach(neighbor => {
-//         minHeap.Insert({weight: node.weights.get(neighbor.id), node: neighbor});
-//     });
-// });
-
-// let order = [];
-// while(minHeap.Min()) {
-//     order.push(minHeap.Pop());
-// }
-// console.log(...order);
