@@ -296,5 +296,3 @@ module.exports = BinaryMinHeap;
 // console.log(heap.Pop());
 // console.log(heap.Pop());
 // console.log(heap.size);
-
-console.log("done");

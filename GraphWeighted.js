@@ -191,7 +191,7 @@ class Graph {
 
     // returns an object with the distance, and path to the requested node
     DijkstraShortestPath(e, s = this.start) {
-        if(typeof(s) ===  "number")
+        if(typeof(s) !==  "object")
             s = this.nodes.get(s);
 
         //initialize
@@ -233,11 +233,21 @@ class Graph {
             });
         }
 
-        console.log("Distances from " + s.id.toString() + ":");
-        // done what do we have?
-        dist.forEach((value, key) => {
-            console.log("ID: " + key + "    Distance: " + value);
-        });
+        let i = e;
+        let path = [];
+        path.push(i);
+        while(i !== s.id){
+            i = prev.get(i);
+            path.push(i);
+        }
+
+        path = path.reverse().toString().replace(/,/g, " -> ");
+
+        return {distance: dist.get(e), path: path};
+    }
+
+    KruskalMinimumSpanningTree() {
+
     }
 }
 
@@ -268,8 +278,8 @@ var main = function() {
     g.ModifyNode(2, {object: "AHHHH"});
 
     // shortest path from 0 to 274
-    let dijk = g.DijkstraShortestPath(274, 0);
-
+    let dijk = g.DijkstraShortestPath(3,"NEWNODE!");
+    console.log(dijk);
 
 
     // console.log("BFS Begin: ");
