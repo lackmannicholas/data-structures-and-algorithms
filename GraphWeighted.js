@@ -1,4 +1,5 @@
 const BinaryMinHeap = require("./BinaryMinHeap");
+const Set = require('./Set');
 
 class GraphNode {
     constructor(id, val, adj = []) {
@@ -247,7 +248,51 @@ class Graph {
     }
 
     KruskalMinimumSpanningTree() {
+        let heap = new BinaryMinHeap([], "cost");
+        let MST = new Set();
+        let sets = new Set();
 
+        // init processing sets with all nodes in different sets
+        this.nodes.forEach(node => {
+            sets.add(new Set([node.id]));
+        });
+
+        // create a min heap from the edges
+        this.nodes.forEach(node => {
+            node.adj.forEach((weight, neighborID) => {
+                heap.insert({cost: weight, start: node.id, end: neighborID});
+            });
+        });
+
+        // while there are edges to process or we've adding all vertices to our final set, process crap
+        while(sets.size > 1 && heap.size !== 0) {
+            let min = heap.pop();
+            let startSet = null;
+            let endSet = null;
+
+            sets.forEach(set => {
+                if(set.has(min.start))
+                    startSet = set;
+                else if(set.has(min.end))
+                    endSet = set;
+            });
+
+            if(startSet != endSet) {
+                let unioned = startSet.union(endSet);
+                sets.delete(startSet);
+                sets.delete(endSet);
+                sets.add(unioned);
+                MST.add(min);
+            }
+        }
+
+        let totalWeight = 0;
+
+        MST.forEach(edge => {
+            totalWeight += edge.cost;
+        });
+
+        return { totalCost: totalWeight, edges: MST };
     }
 }
 
@@ -277,9 +322,11 @@ var main = function() {
 
     g.ModifyNode(2, {object: "AHHHH"});
 
+    let kruskal = g.KruskalMinimumSpanningTree();
+
     // shortest path from 0 to 274
-    let dijk = g.DijkstraShortestPath(3,"NEWNODE!");
-    console.log(dijk);
+    // let dijk = g.DijkstraShortestPath(3,"NEWNODE!");
+    // console.log(dijk);
 
 
     // console.log("BFS Begin: ");
