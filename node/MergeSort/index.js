@@ -22,7 +22,7 @@ function mergeSort(array) {
   let half = Math.floor(array.length/2);
 
   let left = mergeSort(array.slice(0, half));
-  let right = mergeSort(array.slice(half, array.length-1));
+  let right = mergeSort(array.slice(half, array.length));
 
   return merge(left, right);
 }
@@ -37,12 +37,12 @@ function merge(left, right) {
   let l = 0;
   let r = 0;
 
-  for(let i = 0; i < left.length + right.length - 2; i++ ) {
-    if(left[l] < right[r]) {
+  for(let i = 0; i < left.length + right.length; i++ ) {
+    if(!right[r] || left[l] < right[r]) {
       sortedArray.push(left[l])
       l++;
     }
-    else if (right[r] >= left[l]) {
+    else if (!left[l] || right[r] <= left[l]) {
       sortedArray.push(right[r]);
       r++;
     }
