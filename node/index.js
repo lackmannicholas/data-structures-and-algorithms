@@ -1,6 +1,6 @@
 const prompt = require('prompt-sync')();
-
-const algorithms = [{name: 'Merge Sort', function: () => console.log('Merge Sort function')}]
+const MergeSort = require('./MergeSort');
+const algorithms = [{name: 'Merge Sort', function: () => MergeSort()}]
 
 const algo = prompt(`
 Select an algorithm to run:
@@ -14,5 +14,6 @@ try {
   algorithms[i-1].function();
 }
 catch(e) {
-  console.log('You did not enter an acceptable int. Cannot compute. *computer over-heating*  *loud explosion*')
+  console.log(e);
+  console.log('Cannot compute. *computer over-heating*  *loud explosion*')
 }
