@@ -29,5 +29,12 @@ function quickSort(array, n) {
   // recurse 2nd set
 }
 
+function choosePivot() {
+
+}
+
+function partitionArray(array, l, r) {
+
+}
 
 module.exports = QuickSort;
