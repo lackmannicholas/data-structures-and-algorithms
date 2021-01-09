@@ -1,6 +1,7 @@
 const GetRandomArray = require('../RandomArray');
 /**
- * Merge Sort JavaScript Implementation
+ * Merge Sort
+ * Runs in O(nlogn) with O(nlogn) memory
  * @param {Array.int} array Unsorted array of ints
  * @returns {Array.int} Sorted array of ints
  */

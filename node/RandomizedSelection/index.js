@@ -1,65 +1,59 @@
 const GetRandomArray = require('../RandomArray');
+const prompt = require('prompt-sync')();
 
 /**
- * Quick Sort
- * Runs in O(nlogn) with O(nlogn) memory
+ * Randomized Selection of ith int in an unsorted array - Based on QuickSort
+ * Use Case - What's the median of this unsorted array?
+ * Runs in O(n) time and O(logn) memory
  * @param {Array.int} array Unsorted array of ints
  * @returns {Array.int} Sorted array of ints
  */
-function QuickSort(array = GetRandomArray(10000)) {
-  console.log(`initial array 
-    ${array.join(' ')}
-  `);
-  const sortedArray = quickSort(array, 0, array.length - 1);
-  console.log(`sorted array:
-    ${sortedArray.join(' ')}`);
+function RandomnizedSelection(array = GetRandomArray(5)) {
+  const ith = prompt("What is the ith largest number you'd like? ");
+  const ithInt = quickSort(array, 0, array.length - 1, parseInt(ith) - 1);
+  console.log(`The ${ith}th largest int is ${ithInt}`);
 }
 
 /**
- * Internal method for implementing quick sort sort
+ * Internal method for implementing merge sort
  * @param {Array.int} array Unsorted array of ints
  * @param {int} l index of the starting position
  * @param {int} r index of the end position
- * @returns {Array.int} Sorted array of ints
+ * @param {int} i ith largest int in the array
+ * @returns {int} ith int from an unsorted array
  */
-function quickSort(array, l, r) {
+function randomnizedSelection(array, l, r, i) {
   // base case
-  if(r - l <= 0) return array;
+  if(r - l <= 0) return array[l];
   
   // after choose pivot - p, our pivot will be in index 0
   choosePivot(array, l, r);
 
   // partition on p
-  let [lessThanP, greaterThanP] = partitionArray(array, l, r);
+  let [lessThanP, greaterThanP, isIthInt] = partitionArray(array, l, r, i);
+
+  if(isIthInt) return array[lessThanP];
 
   // divide and conquer
-  // recurse < p
-  quickSort(array, l, lessThanP-1);
-
-  // recurse > p
-  quickSort(array, lessThanP+1, greaterThanP);
-
-  return array;
+  if (i < lessThanP) {
+    return randomnizedSelection(array, l, lessThanP - 1, i);
+  }
+  else {
+    return randomnizedSelection(array, lessThanP + 1, greaterThanP, i - greaterThanP);
+  }
 }
 
 function choosePivot(array, l, r) {
-  //console.log('choosing pivot');
-
   let pi = Math.floor(Math.random() * (r - l)) + l;
   let p = array[pi];
-
-  //console.log(`pivot = ${p}`);
 
   // swap p with whatever is at index l;
   let atL = array[l];
   array[l] = p;
   array[pi] = atL;
-
-  //console.log(`pivot chosen - ${array.join(' ')}`);
 }
 
-function partitionArray(array, l, r) {
-  //console.log('partitioning array');
+function partitionArray(array, l, r, i) {
   let unknown = l;
   let lessThanP = l;
   let p = array[l];
@@ -83,8 +77,7 @@ function partitionArray(array, l, r) {
   array[l] = array[lessThanP];
   array[lessThanP] = p;
 
-  //console.log(`array partitioned - ${array.join(' ')}`);
-  return [lessThanP, unknown];
+  return [lessThanP, unknown, lessThanP === i];
 }
 
-module.exports = QuickSort;
+module.exports = RandomnizedSelection;
