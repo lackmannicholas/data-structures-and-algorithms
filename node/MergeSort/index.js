@@ -1,10 +1,10 @@
-
+const GetRandomArray = require('../RandomArray');
 /**
  * Merge Sort JavaScript Implementation
  * @param {Array.int} array Unsorted array of ints
  * @returns {Array.int} Sorted array of ints
  */
-function MergeSort(array = [5, 8, 1, 2, 3]) {
+function MergeSort(array = GetRandomArray(100)) {
   console.log(`initial array ${array.join(' ')}`);
   const sortedArray = mergeSort(array);
   console.log(`initial array ${sortedArray.join(' ')}`);
