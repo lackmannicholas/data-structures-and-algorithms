@@ -5,10 +5,13 @@ const GetRandomArray = require('../RandomArray');
  * @param {Array.int} array Unsorted array of ints
  * @returns {Array.int} Sorted array of ints
  */
-function QuickSort(array = GetRandomArray(100)) {
-  console.log(`initial array ${array.join(' ')}`);
+function QuickSort(array = GetRandomArray(10000)) {
+  console.log(`initial array 
+    ${array.join(' ')}
+  `);
   const sortedArray = quickSort(array, 0, array.length - 1);
-  console.log(`sorted array ${sortedArray.join(' ')}`);
+  console.log(`sorted array:
+    ${sortedArray.join(' ')}`);
 }
 
 /**
@@ -39,23 +42,23 @@ function quickSort(array, l, r) {
 }
 
 function choosePivot(array, l, r) {
-  console.log('choosing pivot');
+  //console.log('choosing pivot');
 
   let pi = Math.floor(Math.random() * (r - l)) + l;
   let p = array[pi];
 
-  console.log(`pivot = ${p}`);
+  //console.log(`pivot = ${p}`);
 
   // swap p with whatever is at index l;
   let atL = array[l];
   array[l] = p;
   array[pi] = atL;
 
-  console.log(`pivot chosen - ${array.join(' ')}`);
+  //console.log(`pivot chosen - ${array.join(' ')}`);
 }
 
 function partitionArray(array, l, r) {
-  console.log('partitioning array');
+  //console.log('partitioning array');
   let unknown = l;
   let lessThanP = l;
   let p = array[l];
@@ -79,7 +82,7 @@ function partitionArray(array, l, r) {
   array[l] = array[lessThanP];
   array[lessThanP] = p;
 
-  console.log(`array partitioned - ${array.join(' ')}`);
+  //console.log(`array partitioned - ${array.join(' ')}`);
   return [lessThanP, unknown];
 }
 

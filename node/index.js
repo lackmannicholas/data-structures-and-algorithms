@@ -15,8 +15,7 @@ Select an algorithm to run:
 
 try {
   let i = parseInt(algo);
-  console.log(`You chose ${algorithms[i-1].name}`);
-
+  console.log(`Running ${algorithms[i-1].name}`);
   algorithms[i-1].function();
 }
 catch(e) {
