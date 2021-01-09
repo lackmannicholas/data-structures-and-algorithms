@@ -1,9 +1,4 @@
-class GraphNode {
-    constructor(val, adj = []) {
-        this.val = val;
-        this.adj = adj;
-    }
-}
+const GraphNode = require('./GraphNodeAdjArray');
 
 class Graph {
     constructor(graph) {
@@ -74,7 +69,7 @@ class Graph {
         }
     }
 
-    // could implement this recursively, but I'm not to save memory space
+    // could implement this recursively, but I'm to save memory space
     // implementing with stack instead
     DFS(s = this.nodes[0]) {
         console.log("DFS Begin:");
@@ -104,13 +99,15 @@ class Graph {
 }
 
 
-var main = function(graph) {
-    let g = new Graph(graph);
-    g.BFS();
-    g.DFS();
-    return;
-};
+// var main = function(graph) {
+//     let g = new Graph(graph);
+//     g.BFS();
+//     g.DFS();
+//     return;
+// };
 
-let graph = [[1,2,4], [3,4], [1], [], []];
+// let graph = [[1,2,4], [3,4], [1], [], []];
 
-main(graph);
+// main(graph);
+
+module.exports = Graph;
