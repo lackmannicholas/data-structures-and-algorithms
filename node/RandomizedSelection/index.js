@@ -8,14 +8,17 @@ const prompt = require('prompt-sync')();
  * @param {Array.int} array Unsorted array of ints
  * @returns {Array.int} Sorted array of ints
  */
-function RandomnizedSelection(array = GetRandomArray(5)) {
+function RandomnizedSelection(array = GetRandomArray(10)) {
+  console.log(`initial array 
+    ${array.join(' ')}
+  `);
   const ith = prompt("What is the ith largest number you'd like? ");
-  const ithInt = quickSort(array, 0, array.length - 1, parseInt(ith) - 1);
+  const ithInt = randomnizedSelection(array, 0, array.length - 1, parseInt(ith) - 1);
   console.log(`The ${ith}th largest int is ${ithInt}`);
 }
 
 /**
- * Internal method for implementing merge sort
+ * Internal method for implementing randomized selection
  * @param {Array.int} array Unsorted array of ints
  * @param {int} l index of the starting position
  * @param {int} r index of the end position
@@ -30,19 +33,27 @@ function randomnizedSelection(array, l, r, i) {
   choosePivot(array, l, r);
 
   // partition on p
-  let [lessThanP, greaterThanP, isIthInt] = partitionArray(array, l, r, i);
+  let [lessThanP, greaterThanP] = partitionArray(array, l, r, i);
 
-  if(isIthInt) return array[lessThanP];
+  // by random chance we've selected the ith largest int through the pivot selection
+  if(lessThanP === i) return array[lessThanP];
 
   // divide and conquer
   if (i < lessThanP) {
     return randomnizedSelection(array, l, lessThanP - 1, i);
   }
   else {
-    return randomnizedSelection(array, lessThanP + 1, greaterThanP, i - greaterThanP);
+    return randomnizedSelection(array, lessThanP + 1, greaterThanP, i);
   }
 }
 
+/**
+ * Same method from Quick Sort. Could import this function from that module if it was exported.
+ * @param {Array.int} array Unsorted array of ints
+ * @param {int} l left index
+ * @param {int} r right index
+ * @returns {Array.int} Array of ints with the pivot int in position l
+ */
 function choosePivot(array, l, r) {
   let pi = Math.floor(Math.random() * (r - l)) + l;
   let p = array[pi];
@@ -53,7 +64,14 @@ function choosePivot(array, l, r) {
   array[pi] = atL;
 }
 
-function partitionArray(array, l, r, i) {
+/**
+ * Same method from Quick Sort. Could import this function from that module if it was exported.
+ * @param {Array.int} array Unsorted array of ints
+ * @param {int} l left index
+ * @param {int} r right index
+ * @returns {Array.int} Array of ints pivot ending in it's correct place in the array
+ */
+function partitionArray(array, l, r) {
   let unknown = l;
   let lessThanP = l;
   let p = array[l];
@@ -77,7 +95,7 @@ function partitionArray(array, l, r, i) {
   array[l] = array[lessThanP];
   array[lessThanP] = p;
 
-  return [lessThanP, unknown, lessThanP === i];
+  return [lessThanP, unknown];
 }
 
 module.exports = RandomnizedSelection;

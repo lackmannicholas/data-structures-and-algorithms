@@ -42,24 +42,31 @@ function quickSort(array, l, r) {
   return array;
 }
 
+/**
+ * Selects a random pivot element, and places it in the l position
+ * @param {Array.int} array Unsorted array of ints
+ * @param {int} l left index
+ * @param {int} r right index
+ * @returns {Array.int} Array of ints with the pivot int in position l
+ */
 function choosePivot(array, l, r) {
-  //console.log('choosing pivot');
-
   let pi = Math.floor(Math.random() * (r - l)) + l;
   let p = array[pi];
-
-  //console.log(`pivot = ${p}`);
 
   // swap p with whatever is at index l;
   let atL = array[l];
   array[l] = p;
   array[pi] = atL;
-
-  //console.log(`pivot chosen - ${array.join(' ')}`);
 }
 
+/**
+ * Partitions the array into less than the pivot, and greater than the pivot, with the pivot ending up in it's correct place in the array
+ * @param {Array.int} array Unsorted array of ints
+ * @param {int} l left index
+ * @param {int} r right index
+ * @returns {Array.int} Array of ints with the pivot int in position l
+ */
 function partitionArray(array, l, r) {
-  //console.log('partitioning array');
   let unknown = l;
   let lessThanP = l;
   let p = array[l];
@@ -83,7 +90,6 @@ function partitionArray(array, l, r) {
   array[l] = array[lessThanP];
   array[lessThanP] = p;
 
-  //console.log(`array partitioned - ${array.join(' ')}`);
   return [lessThanP, unknown];
 }
 
