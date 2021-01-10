@@ -5,3 +5,4 @@ class GraphNode {
   }
 }
 
+module.exports = GraphNode;
