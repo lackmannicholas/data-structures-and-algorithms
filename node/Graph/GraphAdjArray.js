@@ -1,5 +1,8 @@
 const GraphNode = require('./GraphNodeAdjArray');
 
+/**
+ * Adjacency Array Implemenataion of a basic graph based on ints
+ */
 class Graph {
     constructor(graph) {
         // assuming we're getting a array of adjacency lists where the node value is it's position in
@@ -97,17 +100,5 @@ class Graph {
         }
     }
 }
-
-
-// var main = function(graph) {
-//     let g = new Graph(graph);
-//     g.BFS();
-//     g.DFS();
-//     return;
-// };
-
-// let graph = [[1,2,4], [3,4], [1], [], []];
-
-// main(graph);
 
 module.exports = Graph;
