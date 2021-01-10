@@ -5,6 +5,7 @@ const RandomnizedSelection = require('./RandomizedSelection');
 const MinimumCut = require('./MinimumCut');
 const BFS = require('./BFS');
 const DFS = require('./DFS');
+const StronglyConnectedComponents = require('./StronglyConnectedComponents');
 
 const algorithms = [
   {name: 'Merge Sort', function: () => MergeSort()},
@@ -13,6 +14,7 @@ const algorithms = [
   {name: 'Minimum Cut of a Graph', function: () => MinimumCut()},
   {name: 'Breadth First Search', function: () => BFS()},
   {name: 'Depth First Search', function: () => DFS()},
+  {name: 'Strongly Connected Components', function: () => StronglyConnectedComponents()},
 ]
 
 const algo = prompt(`
