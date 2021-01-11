@@ -6,6 +6,7 @@ const MinimumCut = require('./MinimumCut');
 const BFS = require('./BFS');
 const DFS = require('./DFS');
 const StronglyConnectedComponents = require('./StronglyConnectedComponents');
+const DijkstraShortestPath = require('./DijkstraShortestPath');
 
 const algorithms = [
   {name: 'Merge Sort', function: () => MergeSort()},
@@ -15,6 +16,7 @@ const algorithms = [
   {name: 'Breadth First Search', function: () => BFS()},
   {name: 'Depth First Search', function: () => DFS()},
   {name: 'Strongly Connected Components', function: () => StronglyConnectedComponents()},
+  {name: 'Dijkstra\'s Shortest Path', function: () => DijkstraShortestPath},
 ]
 
 const algo = prompt(`
