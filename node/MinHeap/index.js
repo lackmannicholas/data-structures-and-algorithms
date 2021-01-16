@@ -19,14 +19,36 @@ class MinHeap {
   extractMin() {
     const min = this.heap.shift();
 
+    this.maintainAfterDelete();
+    
+    return min;
+  }
+
+  maintainAfterDelete() {
     if(this.heap.length > 0) {
       // clean up to keep heap property intact
       const lastElement = this.heap.pop();
       this.heap.unshift(lastElement);
       this.bubbleDown(lastElement);
     }
-    
-    return min;
+  }
+
+  deleteNode(node) {
+    let removedNode = null;
+    // implementing linear scan for the moment. will change out with recursive search later.
+    for(const i in this.heap) {
+      if(this.heap[i] === node) {
+        removedNode = this.heap.splice(i, 1)[0];
+        break;
+      }
+    }
+
+    if(removedNode) {
+      // maintain heap property
+      this.maintainAfterDelete();
+    }
+
+    return removedNode;
   }
 
   bubbleUp(node, parent, nodeIndex, parentIndex) {
@@ -89,6 +111,7 @@ class MinHeap {
   leftChildIndex(i) { return ((2 * i) + 1)}
   rightChild(i) { return this.heap[this.rightChildIndex(i)] } 
   rightChildIndex(i) { return ((2 * i) + 2)}
+  isEmpty() { return this.heap.length > 0 }
 }
 
 function testMinHeap(array = [9,34,1,85,3,556,23,5,1]) {
@@ -98,6 +121,8 @@ function testMinHeap(array = [9,34,1,85,3,556,23,5,1]) {
     minHeap.insert({ key: elem });
   }
   console.log(minHeap.heap);
+  console.log(`Deleting: ${minHeap.deleteNode(minHeap.heap[5]).key}`);
+  console.log(`Deleting: ${minHeap.deleteNode(minHeap.heap[2]).key}`);
   while(minHeap.heap.length > 0) {
     console.log(minHeap.extractMin());
   }
