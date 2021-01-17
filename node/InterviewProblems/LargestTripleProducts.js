@@ -6,8 +6,14 @@ class MaxHeap {
 
     if(!array) return;
 
-    for(const elem of array) {
-      this.insert(elem);
+    this.buildHeap(array);
+  }
+
+  // this will run in O(n)
+  buildHeap(array) {
+    for(let elem of array) {
+      this.heap.unshift(elem);
+      this.bubbleDown(0);
     }
   }
 
